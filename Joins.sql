@@ -6,6 +6,7 @@ create database Practice
 --  For example, you could join the orders table with the customers table on the customer ID 
 --  to get the customer's name, address, and contact information for the order.
 
+--Customers-table
 create table Customers
 (
 	CustomerId int Identity(1,1) Primary key,
@@ -21,6 +22,12 @@ add CreditScore int default 0;
 update Customers
 set CreditScore = 0 
 
+alter table Customers
+add OrderCount int default 0;
+
+update Customers
+set OrderCount = 0 
+
 select * from Customers
 
 insert into Customers (Name,Email,Address,MobileNo)
@@ -30,6 +37,7 @@ values
 ('ram','ram@gmail.com','Maratalli,Bangalore,Karnataka','6765894562'),
 ('kavitha','kavitha@gmail.com','HSR,Bangalore,Karnataka','7765894565')
 
+--Orders-table
 create table Orders
 (
 	OrderId int Identity(1,1) Primary key,
@@ -47,6 +55,7 @@ values
 (2,'2024-06-25',5000,'pending'),
 (3,'2023-05-01',15000,'shipped'),
 (4,'2023-05-01',2000,'shipped')
+
 
 select o.OrderId,
 	   o.OrderDate,
@@ -66,6 +75,7 @@ where c.CustomerId = o.CustomerId and
 --  for a specific appointment. For example, you could join the appointments table with the patients table and 
 --  the medical history table on the patient ID to get the patient's name, age, medical conditions, and previous treatments.
 
+--Patients-table
  create table Patients 
  (
     PatientId int Identity(1,1) Primary key,
@@ -84,6 +94,7 @@ values
 ('kavitha',23,'Female','403D,amaravathi,AP','66765894563'),
 ('sri',28,'Male','Maratalli,Bangalore,KA','87765894564')
 
+--Appointments-table
 create table Appointments
 (
 	AppointmentId int Identity(1,1) Primary key,
@@ -101,6 +112,7 @@ values
 (3,'2023-07-25 11:00','Dr.Brown','Follow-up visit'),
 (2,'2023-08-05 10:00','Dr.Brown','Regular check-up')
 
+--MedicalHistory-table
 create table MedicalHistory 
 (
     HistoryId int Identity(1,1) Primary key,
@@ -118,6 +130,7 @@ values
 (2,'Asthma','Inhaler','2018-11-20')
 
 update MedicalHistory set PatientId = 3 where HistoryId=2
+
 
 select a.AppointmentId,
 	   a.AppointmentDate,
@@ -142,6 +155,7 @@ where p.PatientId = a.PatientId and
 --  For example, you could join the customers table with the accounts table and the transactions table on the account ID 
 --  to get the account balance, transaction dates, and amounts for the customer's account.
 
+--Accounts-table
 create table Accounts
 (
 	AccountId int Identity(1,1) Primary key,
@@ -159,6 +173,7 @@ values
 (3,'Checking',2000),
 (4,'Savings',4000)
 
+--Transactions-table
 create table Transactions
 (
 	TransactionId int Identity(1,1) Primary key,
@@ -167,7 +182,7 @@ create table Transactions
     Amount decimal(10, 2),
 	TransactionDate datetime
 )
-drop table Transactions
+
 alter table Transactions
 add RelatedAccountId int
 
@@ -177,6 +192,7 @@ insert into Transactions (AccountId,TransactionType,Amount,TransactionDate)
 values 
 (1,'Credit',1000.00,'2023-07-01 10:00'),
 (2,'Debit',500.00,'2023-07-02 12:00')
+
 
 select c.CustomerId,
 	   c.Name,
@@ -200,6 +216,7 @@ where c.CustomerId = a.CustomerId and
 --  For example, you could join the users table with the activity log table on the user ID 
 --  to get the user's name, age, location, and activity history.
 
+--Users-table
 create table Users
 (
 	UserId int Identity(1,1) Primary key,
@@ -216,13 +233,14 @@ values
 ('smith',25,'New York, USA','smith@gmail.com'),
 ('ram',30,'London, UK','ram@gmail.com')
 
+--ActivityLog-table
 create table ActivityLog
 (
 	ActivityId int Identity(1,1) Primary key,
 	UserId int foreign key references Users(UserId),
 	ActivityType varchar(50),
     ActivityDate datetime,
-    Details text
+    Details varchar(max)
 )
 
 select * from ActivityLog
@@ -230,8 +248,11 @@ select * from ActivityLog
 insert into ActivityLog (UserId,ActivityType,ActivityDate,Details)
 values
 (1,'Post','2023-06-03 09:00','Posted a new photo'),
-(2,'Like','2023-05-02 10:00','Liked a post'),
-(2,'Comment','2024-05-05 11:00','Commented on a post')
+(1,'Like','2023-05-02 10:00','Liked a post'),
+(2,'Comment','2024-05-05 11:00','Commented on a post'),
+(1,'Post','2024-06-05 20:00','Posted a new photo'),
+(1,'Like','2024-05-02 12:00','Liked a post')
+
 
 select u.UserId,
 	   u.Name,
@@ -251,6 +272,7 @@ where u.UserId = a.UserId and
 --  for a specific booking. For example, you could join the bookings table with the flights table or the hotels table and 
 --  the customers table on the booking ID to get the booking details, customer names, and contact information.
 
+--Bookings-table
 create table Bookings 
 (
 	BookingId int Identity(1,1) Primary key,
@@ -267,6 +289,7 @@ values
 (1,'2023-06-01 09:00','Flight',1),
 (2,'2023-06-02 10:00','Hotel',1)
 
+--Flights-table
 create table Flights 
 (
     FlightId int Identity(1,1) Primary key,
@@ -285,6 +308,19 @@ values
 ('FL123', 'JFK', 'LAX', '2023-07-01 08:00:00', '2023-07-01 11:00:00', 100),
 ('FL456', 'LAX', 'ORD', '2023-07-02 09:00:00', '2023-07-02 12:00:00', 150)
 
+alter table Flights
+add Price decimal(10, 2);
+
+update Flights
+set DepartureAirport = 'New York'
+where FlightId = 4
+
+insert into Flights (FlightNumber, DepartureAirport, ArrivalAirport, DepartureTime, ArrivalTime, Availability, Price)
+values
+('FL456', 'LAX', 'ORD', '2023-07-02 09:00:00', '2023-07-02 12:00:00', 150, 380.00),
+('FL789', 'JFK', 'SFO', '2023-07-01 10:00:00', '2023-07-01 13:00:00', 120, 320.00);
+
+--Hotels-table
 create table Hotels 
 (
     HotelId int Identity(1,1) Primary key,
@@ -301,6 +337,19 @@ insert into Hotels (HotelName, Location, CheckIn, CheckOut, Availability)
 values
 ('Grand Hotel', 'New York', '2023-07-01 15:00:00', '2023-07-05 12:00:00', 50),
 ('City Inn', 'Los Angeles', '2023-07-02 15:00:00', '2023-07-06 12:00:00', 75);
+
+
+alter table Hotels
+add Price decimal(10, 2);
+
+update Hotels
+set Price = 250
+where HotelId = 1
+
+insert into Hotels (HotelName, Location, CheckIn, CheckOut, Availability, Price)
+values
+('Ocean View Resort', 'Los Angeles', '2023-07-01 14:00:00', '2023-07-05 10:00:00', 60, 200.00),
+('Downtown Suites', 'New York', '2023-07-01 16:00:00', '2023-07-05 12:00:00', 40, 180.00);
 
 
 select c.CustomerId,
