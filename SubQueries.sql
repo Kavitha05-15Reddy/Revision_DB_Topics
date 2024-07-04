@@ -49,21 +49,27 @@ where exists (select 1
 
 --5.Write a query retrieves the product name and price from the "products" table for products that have been ordered by
 --a specific customer with the ID 123.
+
+--Products-table
 create table Products 
 (
     ProductId int Identity(1,1) Primary key,
     ProductName varchar(100),
-    Price decimal(10, 2)
+    Price decimal(10, 2),
+	Inventory int
 )
 
 select * from Products
 
-insert into Products (ProductName,Price)
+insert into Products (ProductName,Price,Inventory)
 values 
-('Laptop', 12000),
-('Monitor', 5000),
-('keyboard', 1000)
+('Laptop', 12000, 8),
+('Monitor', 5000, 20),
+('keyboard', 1000, 9),
+('mouse', 30, 30),
+('pen',20, 20)
 
+--OrderDetails-table
 create table OrderDetails
 (
     OrderDetailId int Identity(1,1) Primary key,
@@ -81,6 +87,7 @@ values
 (2,3,3),
 (3,1,1),
 (3,2,2)
+
 
 select p.ProductName, p.Price
 from Products p, Customers c, Orders o, OrderDetails od
@@ -107,6 +114,7 @@ where p.ProductId = od.ProductId
 --7.Write a query retrieves the employee name and hire date from the "employees" table 
 --for employees who were hired most recently in their respective departments.
 
+--Employees-table
 create table Employees 
 (
     EmployeeId int Identity(1,1) Primary key,
@@ -124,6 +132,7 @@ values
 ('rishi',100,'2023-02-01',70000),
 ('prem',101,'2021-03-01',50000),
 ('tanu',101,'2022-05-01',80000)
+
 
 select e.EmployeeName,e.HireDate
 from Employees e
