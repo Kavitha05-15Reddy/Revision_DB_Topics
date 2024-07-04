@@ -5,6 +5,7 @@ use Practice
 --  the customer service team when an order is placed. The trigger would be fired automatically when a new order is inserted into
 --  the orders table, and it would execute the email sending code to notify the relevant parties.
 
+--NotificationLog-table
 create table NotificationLog 
 (
     LogId int Identity(1,1) Primary key,
@@ -62,6 +63,7 @@ select * from NotificationLog
 --  it would insert a new record into the audit log table with the details of the change, such as the user who made the change and
 --  the timestamp.
 
+--AuditLog-table
 create table AuditLog 
 (
     LogId int Identity(1,1) Primary key,
@@ -157,6 +159,7 @@ select * from AuditLog
 --  it would execute the credit score calculation code to update the customer's credit score based on the transaction amount 
 --  and type.
 
+--CreditscoreLog-table
 create table CreditscoreLog (
     LogId int Identity(1,1) Primary key,
     CustomerId int,
@@ -222,6 +225,7 @@ select * from CreditscoreLog
 --  based on the activity. The trigger would be fired automatically when an insert or update operation is performed on the activity
 --  log table, and it would execute the recommendation generation code to suggest relevant content or connections to the user.
 
+--Recommendations-table
 create table Recommendations 
 (
     RecommendationId int Identity(1,1) Primary key,
