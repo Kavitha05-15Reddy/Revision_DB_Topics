@@ -118,7 +118,8 @@ where p.ProductId = od.ProductId
 create table Employees 
 (
     EmployeeId int Identity(1,1) Primary key,
-    EmployeeName varchar(100),
+    FirstName varchar(50),
+    LastName varchar(50),
     DepartmentId int,
     HireDate date,
     Salary decimal(10, 2)
@@ -126,15 +127,15 @@ create table Employees
 
 select * from Employees
 
-insert into Employees (EmployeeName,DepartmentId,HireDate,Salary)
-values
-('hari',100,'2022-01-01',60000),
-('rishi',100,'2023-02-01',70000),
-('prem',101,'2021-03-01',50000),
-('tanu',101,'2022-05-01',80000)
+insert into Employees (FirstName, LastName, DepartmentId, HireDate, Salary)
+values 
+('hari', 'krishna', 100, '2021-03-01', 50000),
+('rishi', 'kumar', 100, '2022-04-01', 60000),
+('ram', 'sharma', 101, '2020-05-01', 55000),
+('prem', 'gupta', 103, '2023-01-01', 70000)
+	
 
-
-select e.EmployeeName,e.HireDate
+select e.FirstName, e.LastName, e.HireDate
 from Employees e
 where e.HireDate = (select MAX(HireDate)
 					from Employees emp
@@ -144,7 +145,7 @@ where e.HireDate = (select MAX(HireDate)
 --for employees whose salary is greater than the average salary of employees in the department with ID 100. 
 --The subquery is used in the WHERE clause to compare the salary of each employee with the average salary.
 
-select e.EmployeeName, e.Salary
+select e.FirstName, e.LastName, e.Salary
 from Employees e
 where e.Salary > (select avg(emp.Salary)
 				  from Employees emp
